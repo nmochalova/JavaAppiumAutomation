@@ -8,5 +8,13 @@ public class MainClass {
     public int getClassNumber() {
         return this.class_number;
     }
+
+    private String class_string = "Hello, world";
+
+    public String getClassString()
+    {
+        return this.class_string;
+    }
+
 }
 
