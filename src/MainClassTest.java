@@ -22,6 +22,7 @@ public class MainClassTest extends MainClass
     {
      String textString = this.getClassString().toUpperCase();
 
+
      Assert.assertTrue("Error: class_string does not contain 'Hello' or 'hello' ",
              textString.contains("HELLO"));
     }

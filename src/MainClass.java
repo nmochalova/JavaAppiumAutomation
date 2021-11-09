@@ -3,17 +3,17 @@ public class MainClass {
         return 14;
     }
 
-    private int class_number = 20;
+    private final int classNumber = 20;
 
     public int getClassNumber() {
-        return this.class_number;
+        return this.classNumber;
     }
 
-    private String class_string = "Hello, world";
+    private final String classString = "Hello, world";
 
     public String getClassString()
     {
-        return this.class_string;
+        return this.classString;
     }
 
 }
