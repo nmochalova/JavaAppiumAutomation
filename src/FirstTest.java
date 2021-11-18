@@ -131,6 +131,27 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testContainText() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        WebElement text_element = waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find attribut text Search...",
+                15
+        );
+
+        assertElementHasText(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Search…",
+                "Text does not contain 'Search…'"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_messanger, long timeoutInSecond)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
@@ -173,5 +194,14 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by,error_messanger,timeoutInSecond);
         element.clear();
         return element;
+    }
+
+    private boolean assertElementHasText (By by, String text_element, String error_messanger)
+    {
+        WebDriverWait wait = new WebDriverWait(driver,5);
+        wait.withMessage(error_messanger + "\n");
+        return wait.until(
+                ExpectedConditions.attributeContains(by,"text",text_element)
+        );
     }
 }
