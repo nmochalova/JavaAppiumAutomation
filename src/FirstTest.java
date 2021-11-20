@@ -139,14 +139,16 @@ public class FirstTest {
                 5
         );
 
-        WebElement text_element = waitForElementPresent(
-                By.id("org.wikipedia:id/search_src_text"),
+        //локатор нужного элемента.
+        By locatorElement = By.id("org.wikipedia:id/search_src_text");
+        waitForElementPresent(
+                locatorElement,
                 "Cannot find attribut text Search...",
                 15
         );
 
         assertElementHasText(
-                By.id("org.wikipedia:id/search_src_text"),
+                locatorElement,
                 "Search…",
                 "Text does not contain 'Search…'"
         );
@@ -196,6 +198,14 @@ public class FirstTest {
         return element;
     }
 
+    /**
+     * Метод который принимает локатор текст и сообщение об ошибке.
+     * @param by    Локатор
+     * @param text_element  Текст который должен содержаться в элементе локатора
+     * @param error_messanger   Сообщение об ошибке если текста нет такого
+     * @return  Возвращает true если в таком элементе содержится нужный текст.
+     *          false если текст другой.
+     */
     private boolean assertElementHasText (By by, String text_element, String error_messanger)
     {
         WebDriverWait wait = new WebDriverWait(driver,5);
