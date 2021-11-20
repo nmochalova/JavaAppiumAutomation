@@ -189,6 +189,10 @@ public class FirstTest {
 
             Assert.assertTrue("Search result does not contain "+keys_word,elementAttribute.contains(keys_word));
         }
+//      Пример реализации for через лямбды
+//        Assert.assertTrue("Search result does not contain word", elementList
+//                .stream().allMatch(v -> v.getAttribute("text")
+//                        .contains(keys_word)));
     }
 
     private WebElement waitForElementPresent(By by, String error_messanger, long timeoutInSecond)
