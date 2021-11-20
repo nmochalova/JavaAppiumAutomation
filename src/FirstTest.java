@@ -195,6 +195,47 @@ public class FirstTest {
 //                        .contains(keys_word)));
     }
 
+    //Ex3: Тест: отмена поиска. Тест ищет слово, убеждается что найдено несколько вариантов, отменяет поиск и убеждается
+    //что результат поиска пропал
+    @Test
+    public void testSearchResultAndCancel()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String keys_word = "Java";
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                keys_word,
+                "Cannot find search input",
+                5
+        );
+
+        List<WebElement> elementList = waitForElementsPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "List of elements are empty",
+                5
+        );
+
+        Assert.assertTrue("Elements not found",elementList.size()>1);
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_close_btn']"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Search result still present on the page",
+                5
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_messanger, long timeoutInSecond)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
