@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -154,6 +155,42 @@ public class FirstTest {
         );
     }
 
+// Ex4*: Тест: проверка слов в поиске. Тест делает поиск по какому-то ключевому слову. Например, JAVA.
+// Затем убеждается, что в каждом результате поиска есть это слово. Ошибка выдаетсяв случае, если хотя бы один элемент
+// не содержит ключевого слова.
+    @Test
+    public void testSearchWordInResultsList()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String keys_word = "Java";
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                keys_word,
+                "Cannot find search input",
+                5
+        );
+
+        List<WebElement> elementList = waitForElementsPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "List of elements are empty",
+                5
+        );
+
+        for (WebElement webElement : elementList)
+        {
+            String elementAttribute = webElement.getAttribute("text");
+            System.out.println(elementAttribute);
+
+            Assert.assertTrue("Search result does not contain "+keys_word,elementAttribute.contains(keys_word));
+        }
+    }
+
     private WebElement waitForElementPresent(By by, String error_messanger, long timeoutInSecond)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
@@ -214,4 +251,21 @@ public class FirstTest {
                 ExpectedConditions.attributeContains(by,"text",text_element)
         );
     }
+
+    /**
+     * Метод проверяет налиличие нескольких элементов на странице
+     * @param by локатор
+     * @param error_messanger ошибка в случае, если элементы не найдены
+     * @param timeoutInSecond  время ожидания загрузки страницы
+     * @return массив найденных элементов на странице по заданному локатору
+     */
+    private List<WebElement> waitForElementsPresent(By by, String error_messanger, long timeoutInSecond)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
+        wait.withMessage(error_messanger + "\n");
+        return wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(by)
+        );
+    }
+
 }
