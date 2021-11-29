@@ -435,6 +435,38 @@ public class FirstTest {
         );
     }
 
+    //Ex6: Тест: assert title. Тест, который открывает статью и убеждается, что у нее есть элемент title (тест всегда падает!)
+    @Test
+    public void testPresentOfTitle() throws InterruptedException {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String searchLine = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                searchLine,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find string 'Object-oriented programming language' topic searching by " + searchLine,
+                15
+        );
+
+        //      Thread.sleep(5000);
+
+        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/view_page_header_container']/*[@resource-id='org.wikipedia:id/view_page_title_text']";
+        assertElementPresent(
+                By.xpath(searchResultLocator),
+                "Cannot find title element."
+        );
+    }
+
     //Rotation: basic Тест выбирает статью, переворачивает экран и проверяет, что статья не изменилась.
     @Test
     public void testChangeScreenOrientationOnSearchResult()
@@ -841,6 +873,15 @@ public class FirstTest {
         int amountOfElements = getAmountOfElements(by);
         if (amountOfElements > 0) {
             String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + error_messange);
+        }
+    }
+
+    private void assertElementPresent(By by, String error_messange)
+    {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements == 0) {
+            String defaultMessage = "A title not present.";
             throw new AssertionError(defaultMessage + " " + error_messange);
         }
     }
