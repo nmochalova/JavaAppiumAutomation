@@ -452,6 +452,7 @@ public class FirstTest {
                 5
         );
 
+
         waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find string 'Object-oriented programming language' topic searching by " + searchLine,
@@ -527,6 +528,18 @@ public class FirstTest {
                 titleBeforeRotation,
                 titleAfterSecondRotation
         );
+    }
+
+    //Ex7*: Поворот экрана. Тест проверяет, если ориентация экрана альбомная, то разворачивает ее в портретную.
+    @Test
+    public void testRotateToPortrait()
+    {
+        System.out.println("*--*--*-- Current screen orientation Is : " + driver.getOrientation());
+        driver.rotate(ScreenOrientation.LANDSCAPE);
+        System.out.println("*--*--*-- Current screen orientation Is : " + driver.getOrientation());
+
+        RotateToPortrait();
+        System.out.println("*--*--*-- Current screen orientation Is : " + driver.getOrientation());
     }
 
     //Тест проверяет, что после возращения приложения из бэкраунда в нем не сбросились результаты поиска.
@@ -890,5 +903,12 @@ public class FirstTest {
     {
         WebElement element = waitForElementPresent(by, error_message,timeoutInSeconds);
         return  element.getAttribute(attribute);
+    }
+
+    public void RotateToPortrait()
+    {
+        if (driver.getOrientation() == ScreenOrientation.LANDSCAPE) {
+            driver.rotate(ScreenOrientation.PORTRAIT);
+        }
     }
 }
