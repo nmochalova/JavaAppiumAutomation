@@ -32,6 +32,7 @@ public class FirstTest {
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
         capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\org.wikipedia_50377_apps.evozi.com.apk");
+        capabilities.setCapability("orientation","PORTRAIT"); //LANDSCAPE, PORTRAIT
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"),capabilities);
     }
@@ -530,18 +531,6 @@ public class FirstTest {
         );
     }
 
-    //Ex7*: Поворот экрана. Тест проверяет, если ориентация экрана альбомная, то разворачивает ее в портретную.
-    @Test
-    public void testRotateToPortrait()
-    {
-        System.out.println("*--*--*-- Current screen orientation Is : " + driver.getOrientation());
-        driver.rotate(ScreenOrientation.LANDSCAPE);
-        System.out.println("*--*--*-- Current screen orientation Is : " + driver.getOrientation());
-
-        RotateToPortrait();
-        System.out.println("*--*--*-- Current screen orientation Is : " + driver.getOrientation());
-    }
-
     //Тест проверяет, что после возращения приложения из бэкраунда в нем не сбросились результаты поиска.
     @Test
     public void testCheckSearchArticleInBackground()
@@ -903,12 +892,5 @@ public class FirstTest {
     {
         WebElement element = waitForElementPresent(by, error_message,timeoutInSeconds);
         return  element.getAttribute(attribute);
-    }
-
-    public void RotateToPortrait()
-    {
-        if (driver.getOrientation() == ScreenOrientation.LANDSCAPE) {
-            driver.rotate(ScreenOrientation.PORTRAIT);
-        }
     }
 }
