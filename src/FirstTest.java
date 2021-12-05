@@ -1,7 +1,5 @@
 import lib.CoreTestCase;
-import lib.ui.ArticlePageObject;
-import lib.ui.MainPageObject;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -62,7 +60,7 @@ public class FirstTest extends CoreTestCase {
                 articleTitle);
     }
 
-    //Тест, который открывает статью и несколько раз делает swipe по ней
+    //Тест, который открывает статью и несколько раз делает swipe по ней пока не достигнет конца статьи
     @Test
     public void testSwipeArticle()
     {
@@ -75,6 +73,31 @@ public class FirstTest extends CoreTestCase {
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
+    }
+
+    //Тест сохраняет статью в список, потом находит ее и удаляет из списка (свайпом влево).
+    @Test
+    public void testSaveFirstArticleToMyList()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.waitForTitleElement();
+        String articleTitle = ArticlePageObject.getArticleTitle();
+        String nameOfFolder = "prog";
+        ArticlePageObject.addArticleToMyList(nameOfFolder);
+        ArticlePageObject.closeArticle();
+
+        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI.clickMyLists();
+
+        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject.openFolderByName(nameOfFolder);
+        MyListsPageObject.swipeByArticleToDelete(articleTitle);
     }
 
     @Test
@@ -177,97 +200,6 @@ public class FirstTest extends CoreTestCase {
         MainPageObject.waitForElementNotPresent(
                 By.id("org.wikipedia:id/search_results_list"),
                 "Search result still present on the page",
-                5
-        );
-    }
-
-    //03,04 overlay, swipe left, variable. Тест сохраняет статью в список, потом находит ее и удаляет из списка.
-    @Test
-    public void testSaveFirstArticleToMyList()
-    {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "Java",
-                "Cannot find search input",
-                5
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find string 'Object-oriented programming language'",
-                5
-        );
-
-        MainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title",
-                15
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
-                "Cannon find button to open article options",
-                10
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.TextView[@text='Add to reading list']"),
-                "Cannot find option to add articale to reading list",
-                10
-        );
-        MainPageObject.waitForElementAndClick(
-          By.id("org.wikipedia:id/onboarding_button"),
-          "Cannot find 'Got it' in overlay",
-                10
-        );
-        MainPageObject.waitForElementAndClear(
-                By.id("org.wikipedia:id/text_input"),
-                "Cannot find input to set name of article folder",
-                10
-        );
-
-        String nameOfFolder = "Learning programming";
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/text_input"),
-                nameOfFolder,
-                "Cannot put text into articles folder input",
-                10
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='OK']"),
-                "Cannot press Ok button",
-                10);
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "Cannot close article,cannot find X link",
-                10
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
-                "Cannot find navigation button to My list",
-                10
-        );
-        MainPageObject.waitForElementAndClick(
-                //By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/item_title' and @text='" + nameOfFolder + "']"),
-                   By.id("org.wikipedia:id/item_title"),
-                "Cannot find created folder",
-                10);
-
-        MainPageObject.swipeElementToLeft(
-                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
-                "Cannot find saved article"
-        );
-
-        MainPageObject.waitForElementNotPresent(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot delete saved article",
                 5
         );
     }
