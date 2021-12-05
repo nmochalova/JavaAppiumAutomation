@@ -12,6 +12,7 @@ public class SearchPageObject extends MainPageObject {
         SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
         SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']";
 
+    //Инициализация драйвера
     public SearchPageObject(AppiumDriver driver)
     {
         super(driver);
@@ -79,5 +80,15 @@ public class SearchPageObject extends MainPageObject {
                 "Cannot find and click by button X cancel search",
                 5
         );
+    }
+
+    public void clickByArticleWithSubstring(String substring)
+    {
+        String searchResultXpath = getResultSearchElement(substring);
+
+        this.waitForElementAndClick(
+                By.xpath(searchResultXpath),
+                "Cannot find and click search result with substring " + substring,
+                10);
     }
 }
