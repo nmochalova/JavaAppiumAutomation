@@ -129,6 +129,46 @@ public class FirstTest extends CoreTestCase {
         SearchPageObject.assertThereIsNotResultOfSearch();
     }
 
+    //Тест выбирает статью, переворачивает экран и проверяет, что статья не изменилась.
+    @Test
+    public void testChangeScreenOrientationOnSearchResult()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        String titleBeforeRotation = ArticlePageObject.getArticleTitle();
+        this.rotateScreenLandscape();
+        String titleAfterRotation = ArticlePageObject.getArticleTitle();
+
+        Assert.assertEquals(
+                "Article title have been changed after rotation",
+                titleBeforeRotation,
+                titleAfterRotation);
+
+        this.rotateScreenPortrait();
+        String titleAfterSecondRotation = ArticlePageObject.getArticleTitle();
+
+        Assert.assertEquals(
+                "Article title have been changed after second rotation",
+                titleBeforeRotation,
+                titleAfterSecondRotation);
+    }
+
+    //Тест проверяет, что после возращения приложения из бэкраунда в нем не сбросились результаты поиска.
+    @Test
+    public void testCheckSearchArticleInBackground()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearchResult("Object-oriented programming language");
+        this.backgroundApp(2);
+        SearchPageObject.waitForSearchResult("Object-oriented programming language");
+    }
+
     @Test
     public void testContainText() {
         MainPageObject.waitForElementAndClick(
@@ -263,100 +303,6 @@ public class FirstTest extends CoreTestCase {
         MainPageObject.assertElementPresent(
                 By.xpath(searchResultLocator),
                 "Cannot find title element."
-        );
-    }
-
-    //Rotation: basic Тест выбирает статью, переворачивает экран и проверяет, что статья не изменилась.
-    @Test
-    public void testChangeScreenOrientationOnSearchResult()
-    {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-
-       String searchLine = "Java";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                searchLine,
-                "Cannot find search input",
-                5
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find string 'Object-oriented programming language' topic searching by " + searchLine,
-                15
-        );
-
-        String titleBeforeRotation = MainPageObject.waitForElementAndGetAttribute (
-             By.id("org.wikipedia:id/view_page_title_text"),
-                "text",
-                "Cannot find title of article",
-                15
-        );
-
-        driver.rotate(ScreenOrientation.LANDSCAPE); //из портретной в альбомную
-
-        String titleAfterRotation = MainPageObject.waitForElementAndGetAttribute (
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "text",
-                "Cannot find title of article",
-                15
-        );
-
-        Assert.assertEquals(
-                "Article title have been changed after rotation",
-                titleBeforeRotation,
-                titleAfterRotation
-        );
-
-        driver.rotate(ScreenOrientation.PORTRAIT); //из альбомной в портретную
-
-        String titleAfterSecondRotation = MainPageObject.waitForElementAndGetAttribute (
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "text",
-                "Cannot find title of article",
-                15
-        );
-
-        Assert.assertEquals(
-                "Article title have been changed after rotation",
-                titleBeforeRotation,
-                titleAfterSecondRotation
-        );
-    }
-
-    //Тест проверяет, что после возращения приложения из бэкраунда в нем не сбросились результаты поиска.
-    @Test
-    public void testCheckSearchArticleInBackground()
-    {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "Java",
-                "Cannot find search input",
-                5
-        );
-
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find string 'Object-oriented programming language'",
-                5
-        );
-
-        driver.runAppInBackground(2);
-
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find string 'Object-oriented programming language' after returning from background",
-                5
         );
     }
 
