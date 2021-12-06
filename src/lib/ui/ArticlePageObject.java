@@ -1,10 +1,12 @@
-//Методы для работы со статьями
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+/**
+ * Методы для работы со статьями
+ */
 public class ArticlePageObject extends MainPageObject
 {
     public static final String

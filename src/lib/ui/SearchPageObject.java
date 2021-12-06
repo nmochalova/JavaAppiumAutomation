@@ -10,7 +10,10 @@ public class SearchPageObject extends MainPageObject {
         SEARCH_INIT_ELEMENT = "//*[contains(@text,'Search Wikipedia')]",
         SEARCH_INPUT = "//*[contains(@text,'Search…')]",
         SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
-        SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']";
+        SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+        SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
+        SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
+
 
     //Инициализация драйвера
     public SearchPageObject(AppiumDriver driver)
@@ -36,6 +39,7 @@ public class SearchPageObject extends MainPageObject {
                 5);
     }
 
+    //Ввод переданного значения в строку поиска
     public void typeSearchLine(String searchLine)
     {
         this.waitForElementAndSendKeys(
@@ -82,6 +86,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
+    //клик по результату поиска с учетом заданной подстроки
     public void clickByArticleWithSubstring(String substring)
     {
         String searchResultXpath = getResultSearchElement(substring);
@@ -90,5 +95,33 @@ public class SearchPageObject extends MainPageObject {
                 By.xpath(searchResultXpath),
                 "Cannot find and click search result with substring " + substring,
                 10);
+    }
+
+    //Подсчет количества результатов поиска
+    public int getAmountOfFoundArticle()
+    {
+        this.waitForElementPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT),
+                "Cannot find anything by the request",
+                15);
+
+        return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
+    }
+
+    //метод, который ожидает пустой результат запроса (строку No results found на странице)
+    public void waitForEmptyResultsLabel()
+    {
+         this.waitForElementPresent(
+                By.xpath(SEARCH_EMPTY_RESULT_ELEMENT),
+                "Cannot find empty result label by the request ",
+                15);
+    }
+
+    //метод, который проверяет отсуствие результатов поиска
+    public void assertThereIsNotResultOfSearch()
+    {
+        this.assertElementNotPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT),
+                "We've found some results by request " );
     }
 }

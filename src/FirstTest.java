@@ -100,6 +100,35 @@ public class FirstTest extends CoreTestCase {
         MyListsPageObject.swipeByArticleToDelete(articleTitle);
     }
 
+     //Тест проверяет, что по результатам поиска выданы данные (более 1 записи)
+     @Test
+    public void testAmountOfNotEmptySearch()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        String searchLine = "Linkin Park Diskography";
+        SearchPageObject.typeSearchLine(searchLine);
+        int amountOfSearchResult = SearchPageObject.getAmountOfFoundArticle();
+
+        Assert.assertTrue(
+                "We found too few results!",
+                amountOfSearchResult > 0);
+    }
+
+    //Тест, который ожидает пустой результат запроса по заданной строке
+    @Test
+    public void testAmountOfEmptySearch()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        String searchLine = "zaqwetqw";
+        SearchPageObject.typeSearchLine(searchLine);
+        SearchPageObject.waitForEmptyResultsLabel();
+        SearchPageObject.assertThereIsNotResultOfSearch();
+    }
+
     @Test
     public void testContainText() {
         MainPageObject.waitForElementAndClick(
@@ -201,75 +230,6 @@ public class FirstTest extends CoreTestCase {
                 By.id("org.wikipedia:id/search_results_list"),
                 "Search result still present on the page",
                 5
-        );
-    }
-
-    //Assert: basic Тест проверяет, что по результатам поиска выдано данные (более 1 записи)
-    @Test
-    public void testAmountOfNotEmptySearch()
-    {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-
-        String searchLine = "Linkin Park Diskography";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                searchLine,
-                "Cannot find search input",
-                5
-        );
-
-        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
-        MainPageObject.waitForElementPresent(
-               By.xpath(searchResultLocator),
-                "Cannot find anything by the request: " + searchLine,
-                15
-        );
-
-        int amountOfSearchResult = MainPageObject.getAmountOfElements(
-                By.xpath(searchResultLocator)
-        );
-
-        Assert.assertTrue(
-                "We found too few results!",
-                amountOfSearchResult > 0
-        );
-    }
-
-    //Assert: assertion error. Тест, который ожидает пустой результат запроса по заданной строке
-    @Test
-    public void testAmountOfEmptySearch()
-    {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-
-        String searchLine = "zaqwetqw";
-        //String searchLine = "Java";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                searchLine,
-                "Cannot find search input",
-                5
-        );
-
-        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
-        String emptyResultLabel = "//*[@text='No results found']";
-
-        MainPageObject.waitForElementPresent(
-                By.xpath(emptyResultLabel),
-                "Cannot find empty result label by the request " + searchLine,
-                15
-        );
-
-        MainPageObject.assertElementNotPresent(
-                By.xpath(searchResultLocator),
-                "We've found some results by request " + searchLine
         );
     }
 
