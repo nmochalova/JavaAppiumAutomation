@@ -1,15 +1,12 @@
 import lib.CoreTestCase;
 import lib.ui.*;
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
 public class FirstTest extends CoreTestCase {
-
     private MainPageObject MainPageObject;
 
     protected void setUp() throws Exception
@@ -18,158 +15,8 @@ public class FirstTest extends CoreTestCase {
         MainPageObject = new MainPageObject(driver);
     }
 
-    //Тест, который вводит строку поиска и проверяет, что в результатах присутствует нужная статья.
-    @Test
-    public void testSearch()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForSearchResult("Object-oriented programming language");
-    }
-
-    //Тест, который нажимает на строку поиска, а потом на кнопку отмена поиска. Затем проверяет, что поиск был отменен.
-    @Test
-    public void testCancelSearch()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        SearchPageObject.waitForCancelButtonToAppear();
-        SearchPageObject.clickCancelSearch();
-        SearchPageObject.waitForCancelButtonToDisAppear();
-    }
-
-    //Тест, который находит в поиске статью, открывает ее и сверяет заголовок с требуемым
-    @Test
-    public void testCompareArticleTitle()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        String articleTitle = ArticlePageObject.getArticleTitle();
-
-        Assert.assertEquals(
-                "We see unexpected title",
-                "Java (programming language)",
-                articleTitle);
-    }
-
-    //Тест, который открывает статью и несколько раз делает swipe по ней пока не достигнет конца статьи
-    @Test
-    public void testSwipeArticle()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Appium");
-        SearchPageObject.clickByArticleWithSubstring("Appium");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.waitForTitleElement();
-        ArticlePageObject.swipeToFooter();
-    }
-
-    //Тест сохраняет статью в список, потом находит ее и удаляет из списка (свайпом влево).
-    @Test
-    public void testSaveFirstArticleToMyList()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.waitForTitleElement();
-        String articleTitle = ArticlePageObject.getArticleTitle();
-        String nameOfFolder = "prog";
-        ArticlePageObject.addArticleToMyList(nameOfFolder);
-        ArticlePageObject.closeArticle();
-
-        NavigationUI NavigationUI = new NavigationUI(driver);
-        NavigationUI.clickMyLists();
-
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openFolderByName(nameOfFolder);
-        MyListsPageObject.swipeByArticleToDelete(articleTitle);
-    }
-
-     //Тест проверяет, что по результатам поиска выданы данные (более 1 записи)
-     @Test
-    public void testAmountOfNotEmptySearch()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        String searchLine = "Linkin Park Diskography";
-        SearchPageObject.typeSearchLine(searchLine);
-        int amountOfSearchResult = SearchPageObject.getAmountOfFoundArticle();
-
-        Assert.assertTrue(
-                "We found too few results!",
-                amountOfSearchResult > 0);
-    }
-
-    //Тест, который ожидает пустой результат запроса по заданной строке
-    @Test
-    public void testAmountOfEmptySearch()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        String searchLine = "zaqwetqw";
-        SearchPageObject.typeSearchLine(searchLine);
-        SearchPageObject.waitForEmptyResultsLabel();
-        SearchPageObject.assertThereIsNotResultOfSearch();
-    }
-
-    //Тест выбирает статью, переворачивает экран и проверяет, что статья не изменилась.
-    @Test
-    public void testChangeScreenOrientationOnSearchResult()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        String titleBeforeRotation = ArticlePageObject.getArticleTitle();
-        this.rotateScreenLandscape();
-        String titleAfterRotation = ArticlePageObject.getArticleTitle();
-
-        Assert.assertEquals(
-                "Article title have been changed after rotation",
-                titleBeforeRotation,
-                titleAfterRotation);
-
-        this.rotateScreenPortrait();
-        String titleAfterSecondRotation = ArticlePageObject.getArticleTitle();
-
-        Assert.assertEquals(
-                "Article title have been changed after second rotation",
-                titleBeforeRotation,
-                titleAfterSecondRotation);
-    }
-
-    //Тест проверяет, что после возращения приложения из бэкраунда в нем не сбросились результаты поиска.
-    @Test
-    public void testCheckSearchArticleInBackground()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForSearchResult("Object-oriented programming language");
-        this.backgroundApp(2);
-        SearchPageObject.waitForSearchResult("Object-oriented programming language");
-    }
-
-    @Test
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   @Test
     public void testContainText() {
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
@@ -224,10 +71,10 @@ public class FirstTest extends CoreTestCase {
             String elementAttribute = webElement.getAttribute("text");
             System.out.println(elementAttribute);
 
-            Assert.assertTrue("Search result does not contain "+keys_word,elementAttribute.contains(keys_word));
+            assertTrue("Search result does not contain "+keys_word,elementAttribute.contains(keys_word));
         }
 //      Пример реализации for через лямбды
-//        Assert.assertTrue("Search result does not contain word", elementList
+//        assertTrue("Search result does not contain word", elementList
 //                .stream().allMatch(v -> v.getAttribute("text")
 //                        .contains(keys_word)));
     }
@@ -258,7 +105,7 @@ public class FirstTest extends CoreTestCase {
                 5
         );
 
-        Assert.assertTrue("Elements not found",elementList.size()>1);
+        assertTrue("Elements not found",elementList.size()>1);
 
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_close_btn']"),
@@ -468,11 +315,10 @@ public class FirstTest extends CoreTestCase {
                 15
         );
 
-        Assert.assertEquals(
+        assertEquals(
                 "Title Arcticle does not equal 'Appium'",
                 titleArcticleExpected,
                  titleArcticleActual
         );
     }
-
 }
