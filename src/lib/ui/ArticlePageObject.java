@@ -101,8 +101,7 @@ public class ArticlePageObject extends MainPageObject
                 15
         );
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openFolderByName(nameOfFolder);                           //!!!!!!!!!!!!!!!
+        this.openFolderByName(nameOfFolder);
     }
 
     //метод закрывает статью (нажимет на Х в углу статьи)

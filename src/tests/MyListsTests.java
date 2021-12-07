@@ -1,10 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
-import lib.ui.ArticlePageObject;
-import lib.ui.MyListsPageObject;
-import lib.ui.NavigationUI;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -34,7 +31,7 @@ public class MyListsTests extends CoreTestCase
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openFolderByName(nameOfFolder);                       //!!!!!!!!!!!!!!
+        MyListsPageObject.openFolderByName(nameOfFolder);
         MyListsPageObject.swipeByArticleToDelete(articleTitle);
     }
 

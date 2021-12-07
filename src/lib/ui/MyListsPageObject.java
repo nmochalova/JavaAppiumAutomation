@@ -5,18 +5,10 @@ import org.openqa.selenium.By;
 
 public class MyListsPageObject extends MainPageObject{
 
-    public static final String
-            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "//android.widget.TextView[@text='{TITLE}']";
-
-    //метод заменяет параметр {FOLDER_NAME} на переданное имя папки
-    private static String getFolderXpathByName(String nameOfFolder)
-    {
-        return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}",nameOfFolder);
-    }
+    public static final String ARTICLE_BY_TITLE_TPL = "//android.widget.TextView[@text='{TITLE}']";
 
     //метод возвращает Xpath для статьи (заменяет параметр {TITLE} на переданное имя статьи)
-    private static String getSavedArticleXpathByTitle(String articleTitle)
+    private  String getSavedArticleXpathByTitle(String articleTitle)
     {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}",articleTitle);
     }
@@ -25,18 +17,6 @@ public class MyListsPageObject extends MainPageObject{
     public MyListsPageObject(AppiumDriver driver)
     {
         super(driver);
-    }
-
-    //метод, который выбирает ранее созданную папку в reading list по имени папки
-    public void openFolderByName(String nameOfFolder)
-    {
-       String folderNameXpath = getFolderXpathByName(nameOfFolder);
-
-        this.waitForElementAndClick(
-              //  By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/item_title' and @text='" + nameOfFolder + "']"),
-                By.xpath(folderNameXpath),
-                "Cannot find folder by name" + nameOfFolder,
-                15);
     }
 
     //метод проверяет что указанная статья присутствует
