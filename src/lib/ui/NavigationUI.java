@@ -20,7 +20,7 @@ public class NavigationUI extends MainPageObject {
         this.waitForElementAndClick(
                 By.xpath(MY_LIST_LINK),
                 "Cannot find navigation button to My list",
-                10
+                15
         );
     }
 }

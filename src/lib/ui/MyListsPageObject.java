@@ -36,7 +36,7 @@ public class MyListsPageObject extends MainPageObject{
               //  By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/item_title' and @text='" + nameOfFolder + "']"),
                 By.xpath(folderNameXpath),
                 "Cannot find folder by name" + nameOfFolder,
-                10);
+                15);
     }
 
     //метод проверяет что указанная статья присутствует

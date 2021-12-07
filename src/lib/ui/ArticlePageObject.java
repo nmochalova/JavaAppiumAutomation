@@ -50,7 +50,7 @@ public class ArticlePageObject extends MainPageObject
         );
     }
 
-    //метод добавляет статью в список Reading list
+    //метод добавляет статью в новый список Reading list
     public void addArticleToMyList(String nameOfFolder)
     {
         this.waitForElementAndClick(
@@ -85,6 +85,24 @@ public class ArticlePageObject extends MainPageObject
                 By.xpath(MY_LIST_OK_BUTTON),
                 "Cannot press Ok button",
                 10);
+    }
+
+    //метод добавляет статью в ранее созданный список Reading list
+    public void addArticleToExistingMyList(String nameOfFolder)
+    {
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_BUTTON),
+                "Cannon find button to open article options",
+                15
+        );
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_LIST_TO_MY_LIST_BUTTON),
+                "Cannot find option to add articale to reading list",
+                15
+        );
+
+        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject.openFolderByName(nameOfFolder);                           //!!!!!!!!!!!!!!!
     }
 
     //метод закрывает статью (нажимет на Х в углу статьи)

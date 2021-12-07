@@ -60,4 +60,21 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.waitForEmptyResultsLabel();
         SearchPageObject.assertThereIsNotResultOfSearch();
     }
+
+    //Ex3: Тест: отмена поиска. Тест ищет слово, убеждается что найдено несколько вариантов, отменяет поиск и
+    // убеждается что результат поиска пропал
+    @Test
+    public void testSearchResultAndCancel()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        int amountOfSearchResult = SearchPageObject.getAmountOfFoundArticle();
+        assertTrue(
+                "We found only one or less results! We want more one result!",
+                amountOfSearchResult > 1);
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.assertThereIsNotResultOfSearch();
+    }
 }

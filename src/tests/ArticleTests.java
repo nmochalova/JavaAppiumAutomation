@@ -43,4 +43,16 @@ public class ArticleTests extends CoreTestCase
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
     }
+
+    //Ex6: Тест, который открывает статью и убеждается, что у нее есть элемент title (тест всегда падает!)
+    @Test
+    public void testPresentOfTitle() throws InterruptedException {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        // Thread.sleep(5000); //чтобы тест не падал не хватает времени для загрузки страницы. Тест демонстрирует важность задержек.
+        SearchPageObject.assertThereIsResultOfSearch();
+    }
 }

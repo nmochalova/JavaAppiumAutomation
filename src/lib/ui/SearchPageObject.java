@@ -12,8 +12,8 @@ public class SearchPageObject extends MainPageObject {
         SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
         SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
         SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-        SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
-
+        SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
+        SEARCH_RESULT_TITLE = "//*[@resource-id='org.wikipedia:id/view_page_header_container']/*[@resource-id='org.wikipedia:id/view_page_title_text']";
 
     //Инициализация драйвера
     public SearchPageObject(AppiumDriver driver)
@@ -123,5 +123,13 @@ public class SearchPageObject extends MainPageObject {
         this.assertElementNotPresent(
                 By.xpath(SEARCH_RESULT_ELEMENT),
                 "We've found some results by request " );
+    }
+
+    //метод, который проверяет наличие заголовка в статье
+    public void assertThereIsResultOfSearch()
+    {
+        this.assertElementPresent(
+                By.xpath(SEARCH_RESULT_TITLE),
+                "A title not present." );
     }
 }
