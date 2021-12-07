@@ -28,7 +28,7 @@ public class CoreTestCase extends TestCase {
         capabilities.setCapability("platformName","Android");
         capabilities.setCapability("deviceName","AndroidTestDevice");
         capabilities.setCapability("platformVersion","8.0");
-        capabilities.setCapability("automationName","UIAutomator2"); //"Appium"
+        capabilities.setCapability("automationName","Appium"); //"Appium" "UIAutomator2
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
         capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\org.wikipedia_50377_apps.evozi.com.apk");

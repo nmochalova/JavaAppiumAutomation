@@ -13,6 +13,7 @@ public class SearchPageObject extends MainPageObject {
         SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
         SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
         SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
+        SEARCH_ARTICLE_FOR_TITLE_AND_DESC = "//android.widget.LinearLayout[*[@text='{SUBSTRING_TITLE}'] and *[@text='{SUBSTRING_DESC}']]",
         SEARCH_RESULT_TITLE = "//*[@resource-id='org.wikipedia:id/view_page_header_container']/*[@resource-id='org.wikipedia:id/view_page_title_text']";
 
     //Инициализация драйвера
@@ -25,6 +26,14 @@ public class SearchPageObject extends MainPageObject {
     private static String getResultSearchElement(String substring)
     {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}",substring);
+    }
+
+    //метод заменяет в Xpath одновременно заголовок и описание
+    private static String getResultSearchElementForTitleAndDesc(String substringTitle, String substringDesc)
+    {
+        return SEARCH_ARTICLE_FOR_TITLE_AND_DESC
+                .replace("{SUBSTRING_TITLE}",substringTitle)
+                .replace("{SUBSTRING_DESC}",substringDesc);
     }
     /*TEMPLATES METHODS*/
 
@@ -131,5 +140,15 @@ public class SearchPageObject extends MainPageObject {
         this.assertElementPresent(
                 By.xpath(SEARCH_RESULT_TITLE),
                 "A title not present." );
+    }
+
+    //метод дожидатся результата поиска по двум строкам - по заголовку и описанию. Если такого не появляется,
+    // то ошибка.
+    public void waitForElementByTitleAndDescription(String title, String description)
+    {
+        String searchResultXpath =  getResultSearchElementForTitleAndDesc(title, description);
+
+        this.waitForElementPresent(By.xpath(searchResultXpath),
+                "Cannot find element in search result by title and description \n" + searchResultXpath);
     }
 }

@@ -4,6 +4,9 @@ import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Тесты на поиск
  */
@@ -76,5 +79,25 @@ public class SearchTests extends CoreTestCase
                 amountOfSearchResult > 1);
         SearchPageObject.clickCancelSearch();
         SearchPageObject.assertThereIsNotResultOfSearch();
+    }
+
+    //тест, который будет делать поиск по любому запросу на ваш выбор
+    // (поиск по этому слову должен возвращать как минимум 3 результата).
+    // Далее тест должен убеждаться, что первых три результата присутствуют в результате поиска.
+    @Test
+    public void testSearchForTitleAndDescription() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+
+        HashMap<String, String> TitleAndNDescription = new HashMap<>();
+        TitleAndNDescription.put("Java", "Island of Indonesia");
+        TitleAndNDescription.put("JavaScript", "Programming language");
+        TitleAndNDescription.put("Java (programming language)", "Object-oriented programming language");
+
+        for (Map.Entry<String, String> kv : TitleAndNDescription.entrySet()) {
+            SearchPageObject.waitForElementByTitleAndDescription(kv.getKey(), kv.getValue());
+        }
     }
 }
