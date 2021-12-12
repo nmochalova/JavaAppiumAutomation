@@ -3,8 +3,11 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +26,8 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
 
-    //Тест, который нажимает на строку поиска, а потом на кнопку отмена поиска. Затем проверяет, что поиск был отменен.
+    //Тест, который нажимает на строку поиска, а потом на кнопку отмена поиска.
+    // Затем проверяет, что поиск был отменен.
     @Test
     public void testCancelSearch()
     {
@@ -99,5 +103,29 @@ public class SearchTests extends CoreTestCase
         for (Map.Entry<String, String> kv : TitleAndNDescription.entrySet()) {
             SearchPageObject.waitForElementByTitleAndDescription(kv.getKey(), kv.getValue());
         }
+    }
+
+    //Тест, который проверяет что в поле поиска "Search..." действительно написано "Search..."
+    @Test
+    public void testContainText() {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.assertTextSearchString();
+    }
+
+    // Ex4*: Тест: проверка слов в поиске. Тест делает поиск по какому-то ключевому слову. Например, JAVA.
+    // Затем убеждается, что в каждом результате поиска есть это слово. Ошибка выдаетсяв случае, если хотя бы один элемент
+    // не содержит ключевого слова.
+    @Test
+    public void testSearchWordInResultsList()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        String keyWord = "Java";
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(keyWord);
+        SearchPageObject.assertForWordByResultsSearch(keyWord);
+
     }
 }

@@ -3,6 +3,11 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class SearchPageObject extends MainPageObject {
 
@@ -14,7 +19,9 @@ public class SearchPageObject extends MainPageObject {
         SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
         SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
         SEARCH_ARTICLE_FOR_TITLE_AND_DESC = "//android.widget.LinearLayout[*[@text='{SUBSTRING_TITLE}'] and *[@text='{SUBSTRING_DESC}']]",
-        SEARCH_RESULT_TITLE = "//*[@resource-id='org.wikipedia:id/view_page_header_container']/*[@resource-id='org.wikipedia:id/view_page_title_text']";
+        SEARCH_RESULT_TITLE = "//*[@resource-id='org.wikipedia:id/view_page_header_container']/*[@resource-id='org.wikipedia:id/view_page_title_text']",
+        SEARCH_STRING_TEXT = "org.wikipedia:id/search_src_text",
+        SEARCH_RESULT_CONTAINER = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_title']";
 
     //Инициализация драйвера
     public SearchPageObject(AppiumDriver driver)
@@ -37,6 +44,7 @@ public class SearchPageObject extends MainPageObject {
     }
     /*TEMPLATES METHODS*/
 
+    //Метод ожидает на странице элемент "Search Wikipedia" и затем кликает на него
     public void initSearchInput()
     {
         this.waitForElementPresent(By.xpath(SEARCH_INIT_ELEMENT),
@@ -48,7 +56,7 @@ public class SearchPageObject extends MainPageObject {
                 5);
     }
 
-    //Ввод переданного значения в строку поиска
+    //Ввод переданного значения в строку поиска "Search..."
     public void typeSearchLine(String searchLine)
     {
         this.waitForElementAndSendKeys(
@@ -58,6 +66,7 @@ public class SearchPageObject extends MainPageObject {
                 5);
     }
 
+    //Метод проверяет наличие в результатах поиска строку по заданной подстроке
     public void waitForSearchResult(String substring)
     {
         String searchResultXpath = getResultSearchElement(substring);
@@ -65,6 +74,17 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementPresent
                 (By.xpath(searchResultXpath),
                         "Cannot find search result with substring " + substring);
+    }
+
+    //клик по результату поиска с учетом заданной подстроки
+    public void clickByArticleWithSubstring(String substring)
+    {
+        String searchResultXpath = getResultSearchElement(substring);
+
+        this.waitForElementAndClick(
+                By.xpath(searchResultXpath),
+                "Cannot find and click search result with substring " + substring,
+                10);
     }
 
     //Проверка наличия кнопки отмены поиска Х на странице
@@ -93,17 +113,6 @@ public class SearchPageObject extends MainPageObject {
                 "Cannot find and click by button X cancel search",
                 5
         );
-    }
-
-    //клик по результату поиска с учетом заданной подстроки
-    public void clickByArticleWithSubstring(String substring)
-    {
-        String searchResultXpath = getResultSearchElement(substring);
-
-        this.waitForElementAndClick(
-                By.xpath(searchResultXpath),
-                "Cannot find and click search result with substring " + substring,
-                10);
     }
 
     //Подсчет количества результатов поиска
@@ -150,5 +159,38 @@ public class SearchPageObject extends MainPageObject {
 
         this.waitForElementPresent(By.xpath(searchResultXpath),
                 "Cannot find element in search result by title and description \n" + searchResultXpath);
+    }
+
+   //метод который проверяет, что локатор содержит строку "Search…"
+    public void assertTextSearchString()
+    {
+        this.waitForElementPresent(
+                By.id(SEARCH_STRING_TEXT),
+                "Cannot find attribute text Search...",
+                15
+        );
+
+        this.assertElementHasText(
+                By.id(SEARCH_STRING_TEXT),
+                "Search…",
+                "Attribute text on page does not contain 'Search…' but should"
+        );
+    }
+
+    public void assertForWordByResultsSearch (String keyWord)
+    {
+        List<WebElement> elementList = this.waitForElementsPresent(
+               //By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                By.xpath(SEARCH_RESULT_CONTAINER),
+                "List of elements are empty",
+                5
+        );
+
+        for (WebElement webElement : elementList)
+        {
+            String elementAttribute = webElement.getAttribute("text");
+            System.out.println(elementAttribute);
+            assertTrue("Search result does not contain " + keyWord,elementAttribute.contains(keyWord));
+        }
     }
 }
