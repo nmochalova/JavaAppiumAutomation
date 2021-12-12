@@ -7,6 +7,7 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
+import java.time.Duration;
 
 /**
  * Инициализация тестов и их завершение
@@ -31,7 +32,8 @@ public class CoreTestCase extends TestCase {
         capabilities.setCapability("automationName","Appium"); //"Appium" "UIAutomator2
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
-        capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\org.wikipedia_50377_apps.evozi.com.apk");
+   //     capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\org.wikipedia_50377_apps.evozi.com.apk");
+        capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\old-wiki.apk");
         capabilities.setCapability("orientation","PORTRAIT"); //LANDSCAPE, PORTRAIT
 
         driver = new AndroidDriver(new URL(AppiumURL),capabilities);
@@ -59,6 +61,6 @@ public class CoreTestCase extends TestCase {
     //метод отправляет приложение в background
     protected void backgroundApp(int seconds)
     {
-        driver.runAppInBackground(seconds);
+        driver.runAppInBackground(Duration.ofSeconds(seconds));
     }
 }

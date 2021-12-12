@@ -3,12 +3,15 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class MainPageObject {
@@ -107,9 +110,9 @@ public class MainPageObject {
         int startY = (int) (size.height * 0.8);                 //условная координата у: 80% от высоты экрана
         int endY = (int) (size.height * 0.2);                   //условная координата у: свайпаем до 20% по высоте экрана
         action
-                .press(x,startY)
-                .waitAction(timeOfSwipe)
-                .moveTo(x,endY)
+                .press(PointOption.point(x,startY))
+                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(timeOfSwipe)))
+                .moveTo(PointOption.point(x, endY))
                 .release()
                 .perform();
     }
@@ -132,7 +135,7 @@ public class MainPageObject {
         }
     }
 
-    public   void swipeElementToLeft(By by, String error_messange)
+    public  void swipeElementToLeft(By by, String error_messange)
     {
         WebElement element = waitForElementPresent(
                 by,
@@ -146,9 +149,9 @@ public class MainPageObject {
 
         TouchAction action = new TouchAction(driver);           //важно выбрать метод для Appium
         action
-                .press(rightX,middleY)
-                .waitAction(300)
-                .moveTo(leftX,middleY)
+                .press(PointOption.point(rightX,middleY))
+                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
+                .moveTo(PointOption.point(leftX,middleY))
                 .release()
                 .perform();
     }

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="java-client-6.1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/distr/3_java_client/java-client-6.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
