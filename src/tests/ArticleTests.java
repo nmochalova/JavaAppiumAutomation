@@ -3,6 +3,7 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.WelcomePageObject;
 import org.junit.Test;
 
 /**
@@ -54,5 +55,23 @@ public class ArticleTests extends CoreTestCase
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
         // Thread.sleep(5000); //чтобы тест не падал не хватает времени для загрузки страницы. Тест демонстрирует важность задержек.
         SearchPageObject.assertThereIsResultOfSearch();
+    }
+
+    //Тест, который прощелкивает все приветственные экраны
+    // ВНИМАНИЕ!! Только для новой версии apks/org.wikipedia_50377_apps.evozi.com.apk (переключить в CoreTestCase)
+    //для теста есть дублер для iOS в классе iOS/GetStartedTest.testPassThroughWelcome
+    @Test
+    public void testPassThroughWelcome()
+    {
+        WelcomePageObject WelcomePageObject = new WelcomePageObject(driver);
+
+        WelcomePageObject.waitForScreenAddLang();
+        WelcomePageObject.clickNextButton();
+        WelcomePageObject.waitForNewWaysToExp();
+        WelcomePageObject.clickNextButton();
+        WelcomePageObject.waitForReadingList();
+        WelcomePageObject.clickNextButton();
+        WelcomePageObject.waitForSendAnonymousData();
+        WelcomePageObject.clickGetStartedButton();
     }
 }
