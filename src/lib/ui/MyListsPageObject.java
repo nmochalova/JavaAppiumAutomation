@@ -1,11 +1,10 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 public class MyListsPageObject extends MainPageObject{
 
-    public static final String ARTICLE_BY_TITLE_TPL = "//android.widget.TextView[@text='{TITLE}']";
+    public static final String ARTICLE_BY_TITLE_TPL = "xpath://android.widget.TextView[@text='{TITLE}']";
 
     //метод возвращает Xpath для статьи (заменяет параметр {TITLE} на переданное имя статьи)
     private  String getSavedArticleXpathByTitle(String articleTitle)
@@ -25,7 +24,7 @@ public class MyListsPageObject extends MainPageObject{
         String articleXpath = getFolderXpathByName(articleTitle);
 
         this.waitForElementPresent(
-                By.xpath(articleXpath),
+                articleXpath,
                 "Cannot find saved article by title" + articleTitle,
                 15);
     }
@@ -36,7 +35,7 @@ public class MyListsPageObject extends MainPageObject{
         String articleXpath = getFolderXpathByName(articleTitle);
 
         this.waitForElementNotPresent(
-                By.xpath(articleXpath),
+                articleXpath,
                         "Saved article still present with title" + articleTitle,
                         15);
     }
@@ -47,7 +46,7 @@ public class MyListsPageObject extends MainPageObject{
         this.waitForArticleToAppearByTitle(articleTitle);
         String articleXpath = getFolderXpathByName(articleTitle);
         this.swipeElementToLeft(
-                By.xpath(articleXpath),
+                articleXpath,
                 "Cannot find saved article");
         this.waitForArticleToDisappearByTitle(articleTitle);
     }

@@ -3,11 +3,7 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

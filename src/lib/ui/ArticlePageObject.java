@@ -1,7 +1,6 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -10,14 +9,14 @@ import org.openqa.selenium.WebElement;
 public class ArticlePageObject extends MainPageObject
 {
     public static final String
-        TITLE = "org.wikipedia:id/view_page_title_text",
-        FOOTER_ELEMENT = "//*[@text='View page in browser']",
-        OPTIONS_BUTTON = "//android.widget.ImageView[@content-desc='More options']",
-        OPTIONS_LIST_TO_MY_LIST_BUTTON = "//android.widget.TextView[@text='Add to reading list']",
-        ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
-        MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
-        MY_LIST_OK_BUTTON = "//*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+        TITLE = "id:org.wikipedia:id/view_page_title_text",
+        FOOTER_ELEMENT = "xpath://*[@text='View page in browser']",
+        OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
+        OPTIONS_LIST_TO_MY_LIST_BUTTON = "xpath://android.widget.TextView[@text='Add to reading list']",
+        ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
+        MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
+        MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
+        CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']";
 
     //Инициализация драйвера
     public ArticlePageObject(AppiumDriver driver)
@@ -29,7 +28,7 @@ public class ArticlePageObject extends MainPageObject
     public WebElement waitForTitleElement()
     {
         return this.waitForElementPresent(
-                By.id(TITLE),
+                TITLE,
                 "Cannot find article title on page",
                 15);
     }
@@ -44,7 +43,7 @@ public class ArticlePageObject extends MainPageObject
     public void swipeToFooter()
     {
         this.swipeUpToFindElement(
-                By.xpath(FOOTER_ELEMENT),
+                FOOTER_ELEMENT,
                 "Cannot find the end of the article",
                 20
         );
@@ -54,35 +53,35 @@ public class ArticlePageObject extends MainPageObject
     public void addArticleToMyList(String nameOfFolder)
     {
         this.waitForElementAndClick(
-                By.xpath(OPTIONS_BUTTON),
+                OPTIONS_BUTTON,
                 "Cannon find button to open article options",
                 10
         );
         this.waitForElementAndClick(
-                By.xpath(OPTIONS_LIST_TO_MY_LIST_BUTTON),
+                OPTIONS_LIST_TO_MY_LIST_BUTTON,
                 "Cannot find option to add articale to reading list",
                 10
         );
         this.waitForElementAndClick(
-                By.id(ADD_TO_MY_LIST_OVERLAY),
+                ADD_TO_MY_LIST_OVERLAY,
                 "Cannot find 'Got it' in overlay",
                 10
         );
         this.waitForElementAndClear(
-                By.id(MY_LIST_NAME_INPUT),
+                MY_LIST_NAME_INPUT,
                 "Cannot find input to set name of article folder",
                 10
         );
 
         this.waitForElementAndSendKeys(
-                By.id(MY_LIST_NAME_INPUT),
+                MY_LIST_NAME_INPUT,
                 nameOfFolder,
                 "Cannot put text into articles folder input",
                 10
         );
 
         this.waitForElementAndClick(
-                By.xpath(MY_LIST_OK_BUTTON),
+                MY_LIST_OK_BUTTON,
                 "Cannot press Ok button",
                 10);
     }
@@ -91,12 +90,12 @@ public class ArticlePageObject extends MainPageObject
     public void addArticleToExistingMyList(String nameOfFolder)
     {
         this.waitForElementAndClick(
-                By.xpath(OPTIONS_BUTTON),
+                OPTIONS_BUTTON,
                 "Cannon find button to open article options",
                 15
         );
         this.waitForElementAndClick(
-                By.xpath(OPTIONS_LIST_TO_MY_LIST_BUTTON),
+                OPTIONS_LIST_TO_MY_LIST_BUTTON,
                 "Cannot find option to add articale to reading list",
                 15
         );
@@ -108,7 +107,7 @@ public class ArticlePageObject extends MainPageObject
     public void closeArticle()
     {
         this.waitForElementAndClick(
-                By.xpath(CLOSE_ARTICLE_BUTTON),
+                CLOSE_ARTICLE_BUTTON,
                 "Cannot close article,cannot find X link",
                 10
         );
