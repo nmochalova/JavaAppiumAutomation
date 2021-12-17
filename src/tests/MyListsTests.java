@@ -2,6 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.*;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -14,7 +15,7 @@ public class MyListsTests extends CoreTestCase
     @Test
     public void testSaveFirstArticleToMyList()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);;
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
@@ -40,7 +41,7 @@ public class MyListsTests extends CoreTestCase
     public void testSaveTwoArticlesInOneFolder()
     {
         //Добавляем первую статью
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);;
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");

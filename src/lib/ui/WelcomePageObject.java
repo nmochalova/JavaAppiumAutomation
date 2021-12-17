@@ -18,7 +18,8 @@ public class WelcomePageObject extends MainPageObject {
             STEP_ADD_OR_EDIT_PREFERRED ,
             STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK ,
             NEXT_LINK,
-            GET_STARTED_BUTTON;
+            GET_STARTED_BUTTON,
+            SKIP;
 
     public WelcomePageObject(AppiumDriver driver) {
         super(driver);
@@ -33,6 +34,7 @@ public class WelcomePageObject extends MainPageObject {
             STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK = "xpath://*[@text='Send anonymous data']";
             NEXT_LINK = "id:org.wikipedia:id/fragment_onboarding_forward_button";
             GET_STARTED_BUTTON = "id:org.wikipedia:id/fragment_onboarding_done_button";
+            SKIP = "id:org.wikipedia:id/fragment_onboarding_skip_button";
         } else  {
             //Локаторы для iOS, версия приложения apks/Wikipedia.app
             STEP_LEARN_MORE_LINK = "id:Learn more about Wikipedia";
@@ -41,8 +43,8 @@ public class WelcomePageObject extends MainPageObject {
             STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK = "id:Learn more about data collected";
             NEXT_LINK = "id:Next";
             GET_STARTED_BUTTON = "id:Get started";
+            SKIP = "id:Skip";
         }
-
     }
 
     public void waitForScreenAddLang()
@@ -85,5 +87,10 @@ public class WelcomePageObject extends MainPageObject {
         this.waitForElementAndClick(GET_STARTED_BUTTON,
                 "Cannot find and click 'Get Started' button",
                 10);
+    }
+
+    public void clickSkip()
+    {
+         this.waitForElementAndClick(SKIP,"Cannot find and click skip button", 5);
     }
 }

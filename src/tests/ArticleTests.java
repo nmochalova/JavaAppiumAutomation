@@ -4,6 +4,7 @@ import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.WelcomePageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 /**
@@ -15,7 +16,7 @@ public class ArticleTests extends CoreTestCase
     @Test
     public void testCompareArticleTitle()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
@@ -34,7 +35,7 @@ public class ArticleTests extends CoreTestCase
     @Test
     public void testSwipeArticle()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Appium");
@@ -48,7 +49,7 @@ public class ArticleTests extends CoreTestCase
     //Ex6: Тест, который открывает статью и убеждается, что у нее есть элемент title (тест всегда падает!)
     @Test
     public void testPresentOfTitle() throws InterruptedException {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
