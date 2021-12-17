@@ -1,10 +1,11 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject{
+abstract public class MyListsPageObject extends MainPageObject{
 
-    public static final String ARTICLE_BY_TITLE_TPL = "xpath://android.widget.TextView[@text='{TITLE}']";
+    protected static String ARTICLE_BY_TITLE_TPL;
 
     //метод возвращает Xpath для статьи (заменяет параметр {TITLE} на переданное имя статьи)
     private  String getSavedArticleXpathByTitle(String articleTitle)
@@ -48,6 +49,9 @@ public class MyListsPageObject extends MainPageObject{
         this.swipeElementToLeft(
                 articleXpath,
                 "Cannot find saved article");
+        if(Platform.getInstance().isIOS()) {
+                this.clickElementToTheRightUpperCorner(articleXpath,"Cannot find saved article");
+        }
         this.waitForArticleToDisappearByTitle(articleTitle);
     }
 

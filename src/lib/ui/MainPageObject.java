@@ -5,6 +5,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -170,6 +171,22 @@ public class MainPageObject {
     }
     ///////////////////////////////////////////////////////////
 
+    // Для iOS: метод будет кликать по кнопке удаления (красная корзина) при удалении статьи из избранного
+    public void clickElementToTheRightUpperCorner(String locator, String error_message)
+    {
+        WebElement element = this.waitForElementPresent(locator + "/..",error_message); //locator + "/.." - означает родительский эл-т локатора
+        int right_x = element.getLocation().getX();
+        int upper_y = element.getLocation().getY();
+        int lower_y = upper_y + element.getSize().getWidth();
+        int middle_y = (upper_y + lower_y) / 2;
+        int width = element.getSize().getWidth();
+
+        int point_to_click_x = (right_x + width) - 3;  //на 3 пикселя левее чем ширина элемента
+        int point_to_click_y = middle_y;
+
+        TouchAction action = new TouchAction(driver);
+        action.tap(PointOption.point(point_to_click_x,point_to_click_y)).perform();
+    }
 
     public  void swipeElementToLeft(String locator, String error_messange)
     {
@@ -184,12 +201,20 @@ public class MainPageObject {
         int middleY = (upperY + lowerY) / 2;                //середина элемента по оси У
 
         TouchAction action = new TouchAction(driver);           //важно выбрать метод для Appium
-        action
-                .press(PointOption.point(rightX,middleY))
-                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
-                .moveTo(PointOption.point(leftX,middleY))
-                .release()
-                .perform();
+        action.press(PointOption.point(rightX,middleY));
+        action.waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
+
+        //В iOS и Android различается отношение к координатам. Если в Android мы работаем с относительными координатами, относительно эл-та
+        //и свайпаем от точке к точке, то в iOS надо свайпать на определенную ширину от начальной точки. Поэтому для iOS будем свайпать на
+        //всю ширину элемента
+        if(Platform.getInstance().isAndroid()) {
+                action.moveTo(PointOption.point(leftX, middleY));
+        } else {
+            int offset_x = (-1 * element.getSize().getWidth());         //(-1 * ширину эл-та), т.е. крайняя левая точка
+            action.moveTo(PointOption.point(offset_x, 0));       //свайп на всю ширину эл-та
+        }
+        action.release();
+        action.perform();
     }
 
     public int getAmountOfElements(String locator)

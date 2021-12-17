@@ -13,7 +13,7 @@ abstract public class ArticlePageObject extends MainPageObject
         TITLE,
         FOOTER_ELEMENT,
         OPTIONS_BUTTON,
-            OPTIONS_ADD_TO_MY_LIST_BUTTON,
+        OPTIONS_ADD_TO_MY_LIST_BUTTON,
         ADD_TO_MY_LIST_OVERLAY,
         MY_LIST_NAME_INPUT,
         MY_LIST_OK_BUTTON,
@@ -60,7 +60,7 @@ abstract public class ArticlePageObject extends MainPageObject
         }
     }
 
-    //метод добавляет статью в новый список Reading list
+    //метод добавляет статью в новый список Reading list (для Android)
     public void addArticleToMyList(String nameOfFolder)
     {
         this.waitForElementAndClick(
@@ -95,6 +95,12 @@ abstract public class ArticlePageObject extends MainPageObject
                 MY_LIST_OK_BUTTON,
                 "Cannot press Ok button",
                 10);
+    }
+
+    //метод добавляет статью в избранное (для iOS)
+    public void addArticlesToMySaved()
+    {
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON,"Cannot find option to add article to reading list",5);
     }
 
     //метод добавляет статью в ранее созданный список Reading list
