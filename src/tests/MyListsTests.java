@@ -65,7 +65,11 @@ public class MyListsTests extends CoreTestCase
         ArticlePageObject.waitForTitleElement();
         String articleTitle = ArticlePageObject.getArticleTitle();
         String nameOfFolder = "prog";
-        ArticlePageObject.addArticleToMyList(nameOfFolder);
+        if(Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(nameOfFolder);
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
         ArticlePageObject.closeArticle();
 
         //Добавляем вторую статью
@@ -74,7 +78,11 @@ public class MyListsTests extends CoreTestCase
         SearchPageObject.clickByArticleWithSubstring("Appium");
         ArticlePageObject.waitForTitleElement();
         String titleArcticleExpected = ArticlePageObject.getArticleTitle();
-        ArticlePageObject.addArticleToExistingMyList(nameOfFolder);             //!!!!!!!!!!!!!!
+        if(Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToExistingMyList(nameOfFolder);
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
         ArticlePageObject.closeArticle();
 
         //Идем в сохраненную группу и удаляем ону статью
@@ -82,16 +90,27 @@ public class MyListsTests extends CoreTestCase
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = MyListPageObjectFactory.get(driver);
-        MyListsPageObject.openFolderByName(nameOfFolder);                       //!!!!!!!!!!!!!
+
+        if(Platform.getInstance().isAndroid()) {
+            MyListsPageObject.openFolderByName(nameOfFolder);
+        }
         MyListsPageObject.swipeByArticleToDelete(articleTitle);
 
+        //Проверяем, что в списке осталась 1 статья и ее заголовок соответствует второй статье
+        int amountOfArticleInList =  MyListsPageObject.getAmountOfFoundArticleByList();
+        assertTrue(
+                "We found two articles but must have only one!!",
+                amountOfArticleInList == 1);
+
+        MyListsPageObject.waitForArticleToAppearByTitle(titleArcticleExpected);
+
         //Переходим в оставшуюся статью и убеждаемся, что title совпадает
-        SearchPageObject.clickByArticleWithSubstring("Appium");
-        ArticlePageObject.waitForTitleElement();
-        String titleArcticleActual = ArticlePageObject.getArticleTitle();
-        assertEquals(
-                "Title Arcticle does not equal 'Appium'",
-                titleArcticleExpected,
-                titleArcticleActual);
+//        SearchPageObject.clickByArticleWithSubstring("Appium");
+//        ArticlePageObject.waitForTitleElement();
+//        String titleArcticleActual = ArticlePageObject.getArticleTitle();
+//        assertEquals(
+//                "Title Arcticle does not equal 'Appium'",
+//                titleArcticleExpected,
+//                titleArcticleActual);
     }
 }

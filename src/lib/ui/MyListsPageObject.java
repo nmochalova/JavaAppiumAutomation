@@ -6,6 +6,7 @@ import lib.Platform;
 abstract public class MyListsPageObject extends MainPageObject{
 
     protected static String ARTICLE_BY_TITLE_TPL;
+    protected static String SEARCH_RESULT_ELEMENT_BY_LIST;
 
     //метод возвращает Xpath для статьи (заменяет параметр {TITLE} на переданное имя статьи)
     private  String getSavedArticleXpathByTitle(String articleTitle)
@@ -55,4 +56,14 @@ abstract public class MyListsPageObject extends MainPageObject{
         this.waitForArticleToDisappearByTitle(articleTitle);
     }
 
+    //Подсчет количества статей в Избранном
+    public int getAmountOfFoundArticleByList()
+    {
+        this.waitForElementPresent(
+                SEARCH_RESULT_ELEMENT_BY_LIST,
+                "Cannot find anything by the request",
+                15);
+
+        return this.getAmountOfElements(SEARCH_RESULT_ELEMENT_BY_LIST);
+    }
 }
