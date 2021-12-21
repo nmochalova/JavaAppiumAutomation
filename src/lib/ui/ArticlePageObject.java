@@ -17,7 +17,8 @@ abstract public class ArticlePageObject extends MainPageObject
         ADD_TO_MY_LIST_OVERLAY,
         MY_LIST_NAME_INPUT,
         MY_LIST_OK_BUTTON,
-        CLOSE_ARTICLE_BUTTON;
+        CLOSE_ARTICLE_BUTTON,
+        FOLDER_BY_NAME_TPL;
 
     //Инициализация драйвера
     public ArticlePageObject(AppiumDriver driver)
@@ -25,7 +26,13 @@ abstract public class ArticlePageObject extends MainPageObject
         super(driver);
     }
 
-    //мето проверяет наличие статьи на странице
+    //метод заменяет параметр {FOLDER_NAME} на переданное имя папки
+    protected String getFolderXpathByName(String nameOfFolder)
+    {
+        return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}",nameOfFolder);
+    }
+
+    //метод проверяет наличие статьи на странице
     public WebElement waitForTitleElement()
     {
         return this.waitForElementPresent(
@@ -103,6 +110,19 @@ abstract public class ArticlePageObject extends MainPageObject
         this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON,"Cannot find option to add article to reading list",5);
     }
 
+    //метод, который выбирает ранее созданную папку в reading list по имени папки
+    public void openFolderByName(String nameOfFolder)
+    {
+        String folderNameXpath = getFolderXpathByName(nameOfFolder);
+
+        this.waitForElementAndClick(
+                //  By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/item_title' and @text='" + nameOfFolder + "']"),
+                //  By.xpath(folderNameXpath),
+                folderNameXpath,
+                "Cannot find folder by name" + nameOfFolder,
+                15);
+    }
+
     //метод добавляет статью в ранее созданный список Reading list
     public void addArticleToExistingMyList(String nameOfFolder)
     {
@@ -117,7 +137,7 @@ abstract public class ArticlePageObject extends MainPageObject
                 15
         );
 
-        this.openFolderByName(nameOfFolder);
+        openFolderByName(nameOfFolder);
     }
 
     //метод закрывает статью (нажимет на Х в углу статьи)

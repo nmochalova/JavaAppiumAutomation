@@ -19,8 +19,6 @@ import java.util.regex.Pattern;
 
 public class MainPageObject {
 
-    public static final String
-            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']";
     protected AppiumDriver driver;
 
     public MainPageObject(AppiumDriver driver)
@@ -246,25 +244,6 @@ public class MainPageObject {
     {
         WebElement element = waitForElementPresent(locator, error_message,timeoutInSeconds);
         return  element.getAttribute(attribute);
-    }
-
-    //метод заменяет параметр {FOLDER_NAME} на переданное имя папки
-    protected String getFolderXpathByName(String nameOfFolder)
-    {
-        return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}",nameOfFolder);
-    }
-
-    //метод, который выбирает ранее созданную папку в reading list по имени папки
-    public void openFolderByName(String nameOfFolder)
-    {
-       String folderNameXpath = getFolderXpathByName(nameOfFolder);
-
-        this.waitForElementAndClick(
-              //  By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/item_title' and @text='" + nameOfFolder + "']"),
-              //  By.xpath(folderNameXpath),
-                folderNameXpath,
-                "Cannot find folder by name" + nameOfFolder,
-                15);
     }
 
     private By getLocatorByString(String locatorWithType)
