@@ -12,7 +12,7 @@ import static lib.Platform.*;
  *                     iOS : для версии apks/Wikipedia.app
  */
 public class WelcomePageObject extends MainPageObject {
-    private final String
+    protected static String
             STEP_LEARN_MORE_LINK,
             STEP_NEW_WAYS_TO_EXPLORE ,
             STEP_ADD_OR_EDIT_PREFERRED ,
@@ -23,28 +23,6 @@ public class WelcomePageObject extends MainPageObject {
 
     public WelcomePageObject(AppiumDriver driver) {
         super(driver);
-
-        Platform platform = new Platform();
-
-        if (platform.isAndroid()){
-            //Локаторы для Android, версия приложения apks/org.wikipedia_50377_apps.evozi.com.apk
-            STEP_LEARN_MORE_LINK = "id:org.wikipedia:id/addLangContainer";
-            STEP_NEW_WAYS_TO_EXPLORE = "xpath://*[@text='New ways to explore']";
-            STEP_ADD_OR_EDIT_PREFERRED = "xpath://*[@text='Reading lists with sync']";
-            STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK = "xpath://*[@text='Send anonymous data']";
-            NEXT_LINK = "id:org.wikipedia:id/fragment_onboarding_forward_button";
-            GET_STARTED_BUTTON = "id:org.wikipedia:id/fragment_onboarding_done_button";
-            SKIP = "id:org.wikipedia:id/fragment_onboarding_skip_button";
-        } else  {
-            //Локаторы для iOS, версия приложения apks/Wikipedia.app
-            STEP_LEARN_MORE_LINK = "id:Learn more about Wikipedia";
-            STEP_NEW_WAYS_TO_EXPLORE = "id:New ways to explore";
-            STEP_ADD_OR_EDIT_PREFERRED = "id:Add or edit preferred languages";
-            STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK = "id:Learn more about data collected";
-            NEXT_LINK = "id:Next";
-            GET_STARTED_BUTTON = "id:Get started";
-            SKIP = "id:Skip";
-        }
     }
 
     public void waitForScreenAddLang()

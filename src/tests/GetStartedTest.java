@@ -3,6 +3,7 @@ package tests;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.WelcomePageObject;
+import lib.ui.factories.WelcomePageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -16,17 +17,17 @@ public class GetStartedTest extends CoreTestCase
     @Test
     public void testPassThroughWelcome()
     {
-//        DesiredCapabilities capabilities = Platform.getAndroidDesiredCapabilities();
-//        Object appCapabilities = capabilities.getCapability("app");
-//
-//        if (Platform.getInstance().isAndroid())
-//        {
-//           if (appCapabilities.equals("C:\\Work\\Git\\JavaAppiumAutomation\\apks\\old-wiki.apk")) {
-//                return;
-//            }
-//        }
+        DesiredCapabilities capabilities = Platform.getAndroidDesiredCapabilities();
+        Object appCapabilities = capabilities.getCapability("app");
 
-        WelcomePageObject welcomePageObject = new WelcomePageObject(driver);
+        if (Platform.getInstance().isAndroid())
+        {
+           if (appCapabilities.equals("C:\\Work\\Git\\JavaAppiumAutomation\\apks\\old-wiki.apk")) {
+                return;
+            }
+        }
+
+        WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);
 
         welcomePageObject.waitForScreenAddLang();
         welcomePageObject.clickNextButton();

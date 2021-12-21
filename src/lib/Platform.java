@@ -2,7 +2,6 @@ package lib;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
@@ -50,7 +49,7 @@ public class Platform {
     }
 
     //метод получает параметры Capability для платформы Android
-    public DesiredCapabilities getAndroidDesiredCapabilities()
+    public static DesiredCapabilities getAndroidDesiredCapabilities()
     {
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -60,7 +59,7 @@ public class Platform {
         capabilities.setCapability("automationName","Appium"); //"Appium" "UIAutomator2
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
-        //capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\org.wikipedia_50377_apps.evozi.com.apk");
+       // capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\org.wikipedia_50377_apps.evozi.com.apk");
         capabilities.setCapability("app","C:\\Work\\Git\\JavaAppiumAutomation\\apks\\old-wiki.apk");
         capabilities.setCapability("orientation","PORTRAIT"); //LANDSCAPE, PORTRAIT
 

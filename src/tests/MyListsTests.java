@@ -8,7 +8,6 @@ import lib.ui.factories.MyListPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * Тесты на работу с сохраненным списком статей (My lists)
@@ -21,7 +20,7 @@ public class MyListsTests extends CoreTestCase
     @Test
     public void testSaveFirstArticleToMyList()
     {
-        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);;
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
